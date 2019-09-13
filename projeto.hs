@@ -10,7 +10,12 @@ data Point = Point { name :: String
 main = do
     input <- getContents
     let linhas = lines input
-    print $ separaLinhaVazia linhas
+    let separado = separaLinhaVazia linhas
+    let first = fst separado
+    let second = snd separado
+
+    print second
+
 separaLinhaVazia lista = splitAt pos lista where pos = posicao "" lista
 
 posicao _ [] = 0
