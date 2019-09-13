@@ -1,18 +1,22 @@
-module Main where
-
-main :: IO ()
+-- module Main where
+--
+-- main :: IO ()
 
 data Point = Point { name :: String
                      , coordinates :: [Int]
                      , label :: Int
                      } deriving Show
 
-
 main = do
-
     input <- getContents
     let linhas = lines input
-    print linhas
+    print $ separaLinhaVazia linhas
+separaLinhaVazia lista = splitAt pos lista where pos = posicao "" lista
+
+posicao _ [] = 0
+posicao x (a:as) = if a == x
+    then 1
+    else 1 + posicao x as
 
     -- Point 1
     -- name1 <- getLine
