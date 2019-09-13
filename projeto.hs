@@ -1,3 +1,6 @@
+--Luma bla bla bla bla RA:
+--Pietro Ruy Pugliesi RA: 185921
+
 -- module Main where
 --
 -- main :: IO ()
