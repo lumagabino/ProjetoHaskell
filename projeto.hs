@@ -12,8 +12,10 @@ main = do
     let linhas = lines input
     let separado = separaLinhaVazia linhas
     let first = fst separado
-    let second = snd separado
+    let second =  snd separado
 
+    print first
+    print "--"
     print second
 
 separaLinhaVazia lista = splitAt pos lista where pos = posicao "" lista
