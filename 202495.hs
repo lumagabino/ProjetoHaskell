@@ -48,10 +48,6 @@ posicao x (a:as) = if a == x
     then 1
     else 1 + posicao x as
 
-associateLabels:: [Point] -> [String]-> [Point]
-associateLabels listaPontos [] = listaPontos
-associateLabels (x:xs) (y:ys) =
-
 
 -- Distancia euclidiana
 distance as bs = sqrt (dist as bs 0)
