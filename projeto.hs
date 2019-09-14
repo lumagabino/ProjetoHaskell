@@ -18,18 +18,23 @@ main = do
     print "--"
     print second
 
-    let pointList = getPointName first
+    let pointList = createDataStruct first
     print pointList
 
--- Função para pegar os nomes dos pontos (primeira palavra de qualquer linha da entrada)
-getPointName [[]] = []
-getPointName (x:xs) = let
-    v1 = words x
-    v2 = getFirstWord v1
-    v3 = v2:(getPointName xs)
-    in v3
 
-getFirstWord (x:xs) = x
+
+-- Função para pegar os nomes dos pontos (primeira palavra de qualquer linha da entrada)
+createDataStruct [[]] = []
+createDataStruct (x:xs) = let
+    v1 = words x
+    v2 = getName v1
+    v3 = getCoordinates v1
+    v4 = Point { name = v2 , coordinates = v3, label = -1 }
+    v5 = v4:(createDataStruct xs)
+    in v5
+
+getName (x:xs) = x
+getCoordinates (x:xs) =  map (read :: String -> Int) xs
 
 -- Separa a entrada em
 -- Primeira parte: pontos e suas coordenadas
