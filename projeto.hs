@@ -1,9 +1,6 @@
---Luma bla bla bla bla RA:
+--Luma Gabino Vasconcelos RA: 202495
 --Pietro Ruy Pugliesi RA: 185921
 
--- module Main where
---
--- main :: IO ()
 
 data Point = Point { name :: String
                      , coordinates :: [Int]
@@ -21,48 +18,28 @@ main = do
     print "--"
     print second
 
+    let pointList = getPointName first
+    print pointList
+
+-- Função para pegar os nomes dos pontos (primeira palavra de qualquer linha da entrada)
+getPointName [[]] = []
+getPointName (x:xs) = let
+    v1 = words x
+    v2 = getFirstWord v1
+    v3 = v2:(getPointName xs)
+    in v3
+
+getFirstWord (x:xs) = x
+
+-- Separa a entrada em
+-- Primeira parte: pontos e suas coordenadas
+-- Segunda parte: nomes dos pontos e seus respectivos labels
 separaLinhaVazia lista = splitAt pos lista where pos = posicao "" lista
 
 posicao _ [] = 0
 posicao x (a:as) = if a == x
     then 1
     else 1 + posicao x as
-
-    -- Point 1
-    -- name1 <- getLine
-    --
-    -- inputX1 <- getLine
-    -- let x1 = read inputX1 :: Int
-    --
-    -- inputY1 <- getLine
-    -- let y1 = read inputY1 :: Int
-    --
-    -- inputZ1 <- getLine
-    -- let z1 = read inputZ1 :: Int
-    --
-    -- let list1 = [x1, y1, z1]
-    --
-    -- -- let point1 = Point { name = name1 , coordinates = list1 }
-    --
-    -- -- Point 2
-    -- name2 <- getLine
-    --
-    -- inputX2 <- getLine
-    -- let x2 = read inputX2 :: Int
-    --
-    -- inputY2 <- getLine
-    -- let y2 = read inputY2 :: Int
-    --
-    -- inputZ2 <- getLine
-    -- let z2 = read inputZ2 :: Int
-    --
-    -- let list2 = [x2, y2, z2]
-    --
-    -- -- let point2 = Point { name = name2 , coordinates = list2 }
-    --
-    -- let d = distance list1 list2
-    --
-    -- print d
 
 
 -- Distancia euclidiana
