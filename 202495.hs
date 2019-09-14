@@ -20,6 +20,8 @@ main = do
 
     let pointList = createDataStruct first
     print pointList
+    let labelList = createDataStruct second
+    print labelList
 
 
 
@@ -45,6 +47,10 @@ posicao _ [] = 0
 posicao x (a:as) = if a == x
     then 1
     else 1 + posicao x as
+
+associateLabels:: [Point] -> [String]-> [Point]
+associateLabels listaPontos [] = listaPontos
+associateLabels (x:xs) (y:ys) =
 
 
 -- Distancia euclidiana
