@@ -12,7 +12,7 @@ main = do
     let linhas = lines input
     let separado = separaLinhaVazia linhas
     let first = fst separado
-    let second =  snd separado
+    let second = snd separado
 
     print first
     print "--"
@@ -20,7 +20,8 @@ main = do
 
     let pointList = createDataStruct first
     print pointList
-    let labelList = createDataStruct second
+
+    let labelList = map words second
     print labelList
 
 
@@ -42,6 +43,11 @@ getCoordinates (x:xs) =  map (read :: String -> Int) xs
 -- Primeira parte: pontos e suas coordenadas
 -- Segunda parte: nomes dos pontos e seus respectivos labels
 separaLinhaVazia lista = splitAt pos lista where pos = posicao "" lista
+
+--
+-- associaLabels:: [Point] -> [a] -> [Point]
+-- associaLabels listaPontos [] = listaPontos
+-- associaLabels (x:xs) (y:ys) = if getName x == getName y then
 
 posicao _ [] = 0
 posicao x (a:as) = if a == x
