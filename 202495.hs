@@ -1,6 +1,8 @@
 --Luma Gabino Vasconcelos RA: 202495
 --Pietro Ruy Pugliesi RA: 185921
 
+import Data.List
+import Data.Char
 
 data Point = Point { name :: String
                      , coordinates :: [Int]
@@ -21,12 +23,36 @@ main = do
     let pointList = createDataStruct first
     print pointList
 
-    let labelList = map words second
+    let labelList = createLabelList second
     print labelList
 
 
+    -- let pointWithLabelList = setLabels pointList labelList
+    -- print pointWithLabelList
 
--- Função para pegar os nomes dos pontos (primeira palavra de qualquer linha da entrada)
+
+-- setLabels (x:xs) labelList = let
+--     v1 = getPointLabel labelList x
+--     -- v2 = x . label =  v1
+--     -- v3 = x:(setLabels xs labelList)
+--     in v1
+
+-- getPointLabel [] _ = -1
+-- getPointLabel (x:xs) elem = if elem . name == x . name
+--     then x . label
+--     else getPointLabel xs elem
+
+-- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
+createLabelList [[]] = []
+createLabelList (x:xs) = let
+    v1 = words x
+    v2 = getName v1
+    v3 = getLabel v1
+    v4 = Point { name = v2 , coordinates = [], label = v3 }
+    v5 = v4:(createLabelList xs)
+    in v5
+
+-- Função para converter primeira parte da entrada em uma lista de Pontos
 createDataStruct [[]] = []
 createDataStruct (x:xs) = let
     v1 = words x
@@ -38,6 +64,10 @@ createDataStruct (x:xs) = let
 
 getName (x:xs) = x
 getCoordinates (x:xs) =  map (read :: String -> Int) xs
+getLabel (x:xs) = let 
+    v1 = map (read :: String -> Int) xs
+    v2 = head v1
+    in v2
 
 -- Separa a entrada em
 -- Primeira parte: pontos e suas coordenadas
