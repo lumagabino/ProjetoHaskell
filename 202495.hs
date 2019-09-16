@@ -3,6 +3,7 @@
 
 import Data.List
 import Data.Char
+import Data.String
 
 data Point = Point { name :: String
                      , coordinates :: [Int]
@@ -27,8 +28,8 @@ main = do
     print labelList
 
 
-    -- let pointWithLabelList = setLabels pointList labelList
-    -- print pointWithLabelList
+--     let pointWithLabelList = setLabels pointList labelList
+--     print pointWithLabelList
 
 
 -- setLabels (x:xs) labelList = let
@@ -38,8 +39,8 @@ main = do
 --     in v1
 
 -- getPointLabel [] _ = -1
--- getPointLabel (x:xs) elem = if elem . name == x . name
---     then x . label
+-- getPointLabel (x:xs) elem = if map (name . elem) == map (name . x)
+--     then label . x
 --     else getPointLabel xs elem
 
 -- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
@@ -91,3 +92,4 @@ distance as bs = sqrt (dist as bs 0)
 dist [] _ acc = acc
 dist _ [] acc = acc
 dist (p:ps) (q:qs) acc = dist ps qs (acc+((q - p) ^ 2))
+
