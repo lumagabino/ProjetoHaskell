@@ -5,10 +5,14 @@ import Data.List
 import Data.Char
 import Data.String
 
-data Point = Point String [Float] Int deriving (Eq,Show,Read)
-getName (Point name _ _) = name
-getCoordinates (Point _ coord _) = coord
-getLabel (Point _ _ label) = label
+data Point = Point String [Float] deriving (Eq,Show,Read)
+getName (Point name _) = name
+getCoordinates (Point _ coord) = coord
+
+data Label = Label String Int deriving (Eq,Show,Read)
+getLabelName (Label name _) = name
+getLabel (Label _ label) = label
+
 
 main = do
     input <- getContents
@@ -28,20 +32,21 @@ main = do
     print labelList
 
 
---     let pointWithLabelList = setLabels pointList labelList
---     print pointWithLabelList
+    let point = Point "luma" [1,2,3,4]
+    let label = getPointLabel labelList point
+    print label
 
 
+-- setLabels [] _ = []
 -- setLabels (x:xs) labelList = let
---     v1 = getPointLabel labelList x
---     -- v2 = x . label =  v1
---     -- v3 = x:(setLabels xs labelList)
---     in v1
+--     v1 = getPointLabel labelList x 
+--     v3 = v1:(setLabels xs labelList)
+--     in v3
 
--- getPointLabel [] _ = -1
--- getPointLabel (x:xs) point = if map (name . point) == map (name . x)
---     then (label x)
---     else getPointLabel xs elem
+getPointLabel :: [Label] -> Point -> Int
+getPointLabel (x:xs) point = if (getName point) == (getLabelName x)
+    then getLabel x
+    else getPointLabel xs point
 
 -- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
 createLabelList [[]] = []
@@ -49,7 +54,7 @@ createLabelList (x:xs) = let
     v1 = words x
     name = getNameInput v1
     label = getLabelInput v1
-    point = Point name _ label
+    point = Label name label
     v2 = point:(createLabelList xs)
     in v2
 
@@ -59,16 +64,15 @@ populateData (x:xs) = let
     v1 = words x
     name = getNameInput v1
     coord = getCoordinatesInput v1
-    point = Point name coord _
+    point = Point name coord
     v2 = point:(populateData xs)
     in v2
 
 getNameInput (x:xs) = x
-getCoordinatesInput (x:xs) =  map (read :: String -> Int) xs
-getLabelInput (x:xs) = let 
-    v1 = map (read :: String -> Int) xs
-    v2 = head v1
-    in v2
+getCoordinatesInput (x:xs) =  map (read :: String -> Float) xs
+getLabelInput (x:xs)
+    | xs == [] = read x :: Int
+    | otherwise = getLabelInput xs
 
 -- Separa a entrada em
 -- Primeira parte: pontos e suas coordenadas
