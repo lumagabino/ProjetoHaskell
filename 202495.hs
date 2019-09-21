@@ -25,28 +25,43 @@ main = do
     print "--"
     print second
 
-    let pointList = populateData first
+    let pointList = createPointList first
     print pointList
 
     let labelList = createLabelList second
     print labelList
 
+    let tupleList = associateLabelAndPoint labelList pointList
+    print tupleList
 
-    let point = Point "luma" [1,2,3,4]
-    let label = getPointLabel labelList point
-    print label
+    let pointsWithoutLabel = getPointsWithoutLabel labelList pointList
+    print pointsWithoutLabel
+
+-- Separa pontos que ainda não possum label
+getPointsWithoutLabel _ [] = []
+getPointsWithoutLabel labelList (x:xs) = if (checkLabelList labelList x) == False
+    then x:(getPointsWithoutLabel labelList xs)
+    else getPointsWithoutLabel labelList xs
 
 
--- setLabels [] _ = []
--- setLabels (x:xs) labelList = let
---     v1 = getPointLabel labelList x 
---     v3 = v1:(setLabels xs labelList)
---     in v3
+checkLabelList [] _ = False
+checkLabelList (x:xs) point = if (getName point) == (getLabelName x)
+    then True
+    else checkLabelList xs point 
 
-getPointLabel :: [Label] -> Point -> Int
-getPointLabel (x:xs) point = if (getName point) == (getLabelName x)
-    then getLabel x
-    else getPointLabel xs point
+-- Cria lista de tuplas (Int, Ponto) -> (label, ponto) para todos os pontos que possuem label
+associateLabelAndPoint :: [Label] -> [Point] -> [(Int, Point)]
+associateLabelAndPoint [] _ = []
+associateLabelAndPoint (x:xs) pointList = let
+    point = getPointLabel x pointList
+    tuple = ( (getLabel x) , point )
+    tupleList = tuple:(associateLabelAndPoint xs pointList)
+    in tupleList
+
+getPointLabel :: Label -> [Point] -> Point
+getPointLabel label (x:xs) = if (getName x) == (getLabelName label)
+    then x
+    else getPointLabel label xs
 
 -- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
 createLabelList [[]] = []
@@ -59,13 +74,13 @@ createLabelList (x:xs) = let
     in v2
 
 -- Função para converter primeira parte da entrada em uma lista de Pontos
-populateData [[]] = []
-populateData (x:xs) = let
+createPointList [[]] = []
+createPointList (x:xs) = let
     v1 = words x
     name = getNameInput v1
     coord = getCoordinatesInput v1
     point = Point name coord
-    v2 = point:(populateData xs)
+    v2 = point:(createPointList xs)
     in v2
 
 getNameInput (x:xs) = x
