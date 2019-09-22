@@ -20,22 +20,47 @@ main = do
     let separado = separaLinhaVazia linhas
     let first = fst separado
     let second = snd separado
-
+   
+    print "FIRST:"
     print first
-    print "--"
+
+    print "SECOND:"
     print second
 
     let pointList = createPointList first
+    print "pointList:"
     print pointList
 
     let labelList = createLabelList second
+    print "labelList:"
     print labelList
 
     let tupleList = associateLabelAndPoint labelList pointList
+    print "tupleList:"
     print tupleList
 
     let pointsWithoutLabel = getPointsWithoutLabel labelList pointList
+    print "pointsWithoutLabelList:"
     print pointsWithoutLabel
+
+    -- calcula distancia entre ptos dos 2 grupos
+    let distancias = (distance) <$> Just(snd tupleList)  <*> Just pointsWithoutLabelList
+   
+    -- seleciona ponto sem label mais proximo de algum grupo com label
+    let point = menor distancias
+    --preciso saber para qual ponto é a menor distância!!!!!
+
+    -- atribui esse label e atualiza os 2 grupos
+    point = setPointLabel labelMenorDistancia Point
+    -------------mas nao posso atribuir :(...
+
+    -- repetir
+
+
+
+    --printar resposta--> (LABEL, [pontosComEsseLabel])
+    printResposta listaFinal
+
 
 -- Separa pontos que ainda não possum label
 getPointsWithoutLabel _ [] = []
@@ -62,6 +87,13 @@ getPointLabel :: Label -> [Point] -> Point
 getPointLabel label (x:xs) = if (getName x) == (getLabelName label)
     then x
     else getPointLabel label xs
+
+setPointLabel :: Label -> Point -> Point
+setPointLabel label x = 
+    name = getNameInput x
+    coordinate = getCoordinatesInput x
+    point = name coordinate label
+    in point
 
 -- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
 createLabelList [[]] = []
@@ -104,11 +136,18 @@ posicao x (a:as) = if a == x
     then 1
     else 1 + posicao x as
 
+menor lista  = foldl1 (\acc x -> if acc < x then acc else x) lista
+
 
 -- Distancia euclidiana
 distance as bs = sqrt (dist as bs 0)
 
 dist [] _ acc = acc
 dist _ [] acc = acc
-dist (p:ps) (q:qs) acc = dist ps qs (acc+((q - p) ^ 2))
+dist (p:ps) (q:qs) acc = dist ps qs (acc+((q - p) ^ 2)) 
 
+
+printResposta listaFinalTuplas = 
+    let labelOrdenado = sort listaFinalTuplas -- label ordenado (1, []), (2, []), etc
+    in 
+        sort $ snd labelOrdenado
