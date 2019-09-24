@@ -46,11 +46,11 @@ main = do
     print pointsWithoutLabel
 
     -- calcula distancia entre ptos dos 2 grupos
-    -- let distancias = (distance) <$> (map getCoordinates pointsWithoutLabel)  <*> (map getCoordinates  (snd tupleList))
-    -- print distancias
+    let allDistances = getDistances pointsWithoutLabel tupleList
+    print allDistances
    
     -- -- seleciona ponto sem label mais proximo de algum grupo com label
-    -- let point = menor distancias
+    -- let point = menor allDistances
     -- --preciso saber para qual ponto é a menor distância!!!!!
 
     -- -- atribui esse label e atualiza os 2 grupos
@@ -63,6 +63,28 @@ main = do
 
     --printar resposta--> (LABEL, [pontosComEsseLabel])
     -- printResposta listaFinal
+
+menor lista  = foldl1 (\acc x -> if acc < x then acc else x) lista
+
+
+getDistances _ [] = []
+getDistances pointsWithoutLabel (x:xs) = let 
+    -- labelCoord = (map getCoordinates (map snd $ tupleList))
+    -- pointsCoord = (map getCoordinates pointsWithoutLabel)
+    -- distances = (distance) <$> labelCoord <*> pointsCoord
+    tupleList = getListOfDistances pointsWithoutLabel x
+    distList = tupleList:(getDistances pointsWithoutLabel xs)
+    in distList
+
+getListOfDistances [] _ = []
+getListOfDistances (x:xs) tuple = let
+    coord = getCoordinates (snd tuple)
+    dist = distance coord (getCoordinates x)
+    label = fst tuple
+    tupleDistance = (label, dist, x)
+    list = tupleDistance:(getListOfDistances xs tuple)
+    in list
+
 
 
 -- Separa pontos que ainda não possum label
@@ -131,8 +153,6 @@ posicao _ [] = 0
 posicao x (a:as) = if a == x
     then 1
     else 1 + posicao x as
-
-menor lista  = foldl1 (\acc x -> if acc < x then acc else x) lista
 
 
 -- Distancia euclidiana
