@@ -20,19 +20,19 @@ main = do
     let first = fst separado
     let second = snd separado
    
-    print "FIRST:"
-    print first
+    -- print "FIRST:"
+    -- print first
 
-    print "SECOND:"
-    print second
+    -- print "SECOND:"
+    -- print second
 
     let pointList = createPointList first
-    print "pointList:"
-    print pointList
+    -- print "pointList:"
+    -- print pointList
 
     let labelList = createLabelList second
-    print "labelList:"
-    print labelList
+    -- print "labelList:"
+    -- print labelList
 
     let tupleList = associateLabelAndPoint labelList pointList
     print "tupleList:"
@@ -42,25 +42,30 @@ main = do
     print "pointsWithoutLabelList:"
     print pointsWithoutLabel
 
-    -- calcula distancia entre ptos dos 2 grupos
-    let allDistances = getDistances pointsWithoutLabel tupleList
-    print allDistances
-   
-    -- -- seleciona ponto sem label mais proximo de algum grupo com label
-    let point = minDist allDistances
-    print point
-    -- --preciso saber para qual ponto é a menor distância!!!!!
-
-    -- -- atribui esse label e atualiza os 2 grupos
-    -- point = setPointLabel labelMenorDistancia Point
-    -- -------------mas nao posso atribuir :(...
-
-    -- repetir
-
-
+    let final = repeatUntilEmpty pointsWithoutLabel tupleList
+    print final
 
     --printar resposta--> (LABEL, [pontosComEsseLabel])
     -- printResposta listaFinal
+
+repeatUntilEmpty [] list = list
+repeatUntilEmpty noLabelList labledList = let
+    allDistances = getDistances noLabelList labledList
+    dist = minDist allDistances
+    tupleToAdd = (getNameTuple dist, getPointTuple dist)
+    listAdded = labledList++[tupleToAdd]
+    listAfterRemove = remove noLabelList (getPointTuple dist)
+    repeated = repeatUntilEmpty listAfterRemove listAdded 
+    in repeated
+
+
+getNameTuple (name,_,_) = name
+
+remove [] _ = []
+remove (x:xs) point = if (getName point) == (getName x)
+    then remove xs point
+    else x : remove xs point
+getPointTuple (_,_,point) = point
 
 
 minDist :: [(Int, Float, Point)] -> (Int, Float, Point)
