@@ -13,6 +13,8 @@ data Label = Label String Int deriving (Eq,Show,Read)
 getLabelName (Label name _) = name
 getLabel (Label _ label) = label
 
+data MinDistance = MinDistance String Point deriving (Eq,Show,Read)
+
 
 main = do
     input <- getContents
@@ -44,22 +46,23 @@ main = do
     print pointsWithoutLabel
 
     -- calcula distancia entre ptos dos 2 grupos
-    let distancias = (distance) <$> Just(snd tupleList)  <*> Just pointsWithoutLabelList
+    -- let distancias = (distance) <$> (map getCoordinates pointsWithoutLabel)  <*> (map getCoordinates  (snd tupleList))
+    -- print distancias
    
-    -- seleciona ponto sem label mais proximo de algum grupo com label
-    let point = menor distancias
-    --preciso saber para qual ponto é a menor distância!!!!!
+    -- -- seleciona ponto sem label mais proximo de algum grupo com label
+    -- let point = menor distancias
+    -- --preciso saber para qual ponto é a menor distância!!!!!
 
-    -- atribui esse label e atualiza os 2 grupos
-    point = setPointLabel labelMenorDistancia Point
-    -------------mas nao posso atribuir :(...
+    -- -- atribui esse label e atualiza os 2 grupos
+    -- point = setPointLabel labelMenorDistancia Point
+    -- -------------mas nao posso atribuir :(...
 
     -- repetir
 
 
 
     --printar resposta--> (LABEL, [pontosComEsseLabel])
-    printResposta listaFinal
+    -- printResposta listaFinal
 
 
 -- Separa pontos que ainda não possum label
@@ -87,13 +90,6 @@ getPointLabel :: Label -> [Point] -> Point
 getPointLabel label (x:xs) = if (getName x) == (getLabelName label)
     then x
     else getPointLabel label xs
-
-setPointLabel :: Label -> Point -> Point
-setPointLabel label x = 
-    name = getNameInput x
-    coordinate = getCoordinatesInput x
-    point = name coordinate label
-    in point
 
 -- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
 createLabelList [[]] = []
@@ -147,7 +143,6 @@ dist _ [] acc = acc
 dist (p:ps) (q:qs) acc = dist ps qs (acc+((q - p) ^ 2)) 
 
 
-printResposta listaFinalTuplas = 
-    let labelOrdenado = sort listaFinalTuplas -- label ordenado (1, []), (2, []), etc
-    in 
-        sort $ snd labelOrdenado
+-- printResposta listaFinalTuplas = 
+--     let labelOrdenado = sort listaFinalTuplas -- label ordenado (1, []), (2, []), etc
+--     in sort $ snd labelOrdenado
