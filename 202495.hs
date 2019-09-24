@@ -14,9 +14,6 @@ data Label = Label String Int deriving (Eq,Show,Read)
 getLabelName (Label name _) = name
 getLabel (Label _ label) = label
 
-data Output = Output Int [String] deriving (Eq,Show,Read)
-
-
 main = do
     input <- getContents
     let linhas = lines input
@@ -48,12 +45,29 @@ main = do
 
     let final = repeatUntilEmpty pointsWithoutLabel tupleList
     print final
+    
+    let uniqueSorted = nub (sort (map fst final))
+    let out = outputFomatter final uniqueSorted
+    print out
 
-    let output = sortBy (compare `on` fst) final
-    print output
+
 
     --printar resposta--> (LABEL, [pontosComEsseLabel])
     -- printResposta listaFinal
+
+outputFomatter :: [(Int, Point)] -> [Int] -> [(Int, [String])]
+outputFomatter _ [] = []
+outputFomatter final (x:xs) = let
+    pointNames = searchForPointNames final x
+    sortedPoints = sort pointNames
+    fomat = (x, sortedPoints)
+    list = fomat:(outputFomatter final xs)
+    in list
+
+searchForPointNames [] _ = []
+searchForPointNames (x:xs) label = if (fst x) == label
+    then (getName (snd x)):(searchForPointNames xs label)
+    else searchForPointNames xs label
 
 
 repeatUntilEmpty [] list = list
