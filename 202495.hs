@@ -48,20 +48,18 @@ main = do
     
     let uniqueSorted = nub (sort (map fst final))
     let out = outputFomatter final uniqueSorted
-    print out
+    mapM_ print out    
 
 
-
-    --printar resposta--> (LABEL, [pontosComEsseLabel])
-    -- printResposta listaFinal
+-------------------------------
 
 outputFomatter :: [(Int, Point)] -> [Int] -> [(Int, [String])]
 outputFomatter _ [] = []
 outputFomatter final (x:xs) = let
     pointNames = searchForPointNames final x
     sortedPoints = sort pointNames
-    fomat = (x, sortedPoints)
-    list = fomat:(outputFomatter final xs)
+    format = (x, sortedPoints)
+    list = format:(outputFomatter final xs)
     in list
 
 searchForPointNames [] _ = []
@@ -148,7 +146,7 @@ getPointLabel label (x:xs) = if (getName x) == (getLabelName label)
     else getPointLabel label xs
 
 -- Transformação da segunda entrada na mesma estrutura de dados para facilitar as comparações
-createLabelList [[]] = []
+createLabelList [] = []
 createLabelList (x:xs) = let
     v1 = words x
     name = getNameInput v1
@@ -167,7 +165,9 @@ createPointList (x:xs) = let
     v2 = point:(createPointList xs)
     in v2
 
-getNameInput (x:xs) = x
+
+getNameInput [] = []
+getNameInput (x:_) = x
 getCoordinatesInput (x:xs) =  map (read :: String -> Float) xs
 getLabelInput (x:xs)
     | xs == [] = read x :: Int
