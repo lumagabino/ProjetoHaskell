@@ -13,9 +13,6 @@ data Label = Label String Int deriving (Eq,Show,Read)
 getLabelName (Label name _) = name
 getLabel (Label _ label) = label
 
-data MinDistance = MinDistance String Point deriving (Eq,Show,Read)
-
-
 main = do
     input <- getContents
     let linhas = lines input
@@ -50,7 +47,8 @@ main = do
     print allDistances
    
     -- -- seleciona ponto sem label mais proximo de algum grupo com label
-    -- let point = menor allDistances
+    let point = minDist allDistances
+    print point
     -- --preciso saber para qual ponto é a menor distância!!!!!
 
     -- -- atribui esse label e atualiza os 2 grupos
@@ -64,7 +62,16 @@ main = do
     --printar resposta--> (LABEL, [pontosComEsseLabel])
     -- printResposta listaFinal
 
-menor lista  = foldl1 (\acc x -> if acc < x then acc else x) lista
+
+minDist :: [(Int, Float, Point)] -> (Int, Float, Point)
+minDist (x:xs) = min' xs x
+
+min' :: [(Int, Float, Point)] -> (Int, Float, Point) -> (Int, Float, Point)
+min' [] a = a
+min' (y:ys) a
+    | (getDistTuple y) < (getDistTuple a) = min' ys y
+    | otherwise = min' ys a
+getDistTuple (_,dist,_) = dist
 
 
 getDistances _ [] = []
@@ -73,7 +80,7 @@ getDistances pointsWithoutLabel (x:xs) = let
     -- pointsCoord = (map getCoordinates pointsWithoutLabel)
     -- distances = (distance) <$> labelCoord <*> pointsCoord
     tupleList = getListOfDistances pointsWithoutLabel x
-    distList = tupleList:(getDistances pointsWithoutLabel xs)
+    distList = tupleList++(getDistances pointsWithoutLabel xs)
     in distList
 
 getListOfDistances [] _ = []
