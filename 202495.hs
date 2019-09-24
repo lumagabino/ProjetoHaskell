@@ -4,6 +4,7 @@
 import Data.List
 import Data.Char
 import Data.String
+import Data.Function (on)
 
 data Point = Point String [Float] deriving (Eq,Show,Read)
 getName (Point name _) = name
@@ -12,6 +13,9 @@ getCoordinates (Point _ coord) = coord
 data Label = Label String Int deriving (Eq,Show,Read)
 getLabelName (Label name _) = name
 getLabel (Label _ label) = label
+
+data Output = Output Int [String] deriving (Eq,Show,Read)
+
 
 main = do
     input <- getContents
@@ -45,8 +49,12 @@ main = do
     let final = repeatUntilEmpty pointsWithoutLabel tupleList
     print final
 
+    let output = sortBy (compare `on` fst) final
+    print output
+
     --printar resposta--> (LABEL, [pontosComEsseLabel])
     -- printResposta listaFinal
+
 
 repeatUntilEmpty [] list = list
 repeatUntilEmpty noLabelList labledList = let
