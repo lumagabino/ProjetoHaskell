@@ -1,0 +1,3 @@
+(2,["luma"])
+(5,["ponto1","ponto2"])
+(10,["pietro"])

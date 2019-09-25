@@ -1,0 +1,14 @@
+a 0 0
+aa 0 1
+aaa 0 2
+aaaa 0 3
+b 10 0
+bb 10 1
+bbb 10 2
+bbbb 10 3
+c 20 0
+cc 20 1
+ccc 20 2
+cccc 20 3
+
+a 3
